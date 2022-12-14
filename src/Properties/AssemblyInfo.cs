@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿#define CIBUILD_disabled
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -36,7 +37,13 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("2.0.0.0")]
+#if CIBUILD
+[assembly: AssemblyFileVersion("@MAJOR@.@MINOR@.@PATCH@.@BUILD@")]
+[assembly: AssemblyInformationalVersion("@MAJOR@.@MINOR@.@PATCH@.@BUILD@")]
+#else
 [assembly: AssemblyFileVersion("1.8.5.0")]
 [assembly: AssemblyInformationalVersion("1.8.5.0")]
+#endif
+
 [assembly: KSPAssembly("KerbalKonstructs", 1, 8, 5)]
 
