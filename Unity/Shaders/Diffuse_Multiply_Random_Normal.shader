@@ -22,6 +22,13 @@ Shader "KK/Diffuse_Multiply_Random"
 		ZWrite On
 		ZTest LEqual
 
+		Stencil
+		{
+			Ref 4
+			Comp Always
+			Pass Replace
+		}  
+
         CGPROGRAM
         // Upgrade NOTE: excluded shader from OpenGL ES 2.0 because it uses non-square matrices
         #pragma exclude_renderers gles
