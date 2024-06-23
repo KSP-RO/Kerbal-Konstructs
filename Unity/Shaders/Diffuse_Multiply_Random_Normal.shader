@@ -21,15 +21,14 @@ Shader "KK/Diffuse_Multiply_Random"
         LOD 200
 		ZWrite On
 		ZTest LEqual
-		Blend SrcAlpha OneMinusSrcAlpha
 
         CGPROGRAM
         // Upgrade NOTE: excluded shader from OpenGL ES 2.0 because it uses non-square matrices
         #pragma exclude_renderers gles
-        // Physically based Standard lighting model, and enable shadows on all light types
+        
+		// Physically based Standard lighting model, and enable shadows on all light types
         #pragma surface surf BlinnPhong fullforwardshadows nofog
  
-        // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
 
         #include "KSP-include.cginc"
@@ -111,9 +110,6 @@ Shader "KK/Diffuse_Multiply_Random"
 			//fixed4 glow = tex2D(_Emissive, (IN.uv_MainTex));
 			//o.Emission = glow.rgb * glow.aaa * _EmissiveColor.rgb * _EmissiveColor.aaa + stockEmit(IN.viewDir, normal, _RimColor, _RimFalloff, _TemperatureColor) * _Opacity;
 			o.Emission = stockEmit(IN.viewDir, normal, _RimColor, _RimFalloff, _TemperatureColor) * _Opacity;
-
-			//controlled directly by shader property
-			o.Alpha = _Opacity;
 
 
 			//apply the standard shader param multipliers to the sampled/computed values.

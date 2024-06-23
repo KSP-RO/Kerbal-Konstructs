@@ -47,7 +47,6 @@ Shader "KK/Ground_Multi_NoUV"
         LOD 200
 		ZWrite On
 		ZTest LEqual
-		Blend SrcAlpha OneMinusSrcAlpha
 
         CGPROGRAM
         // Upgrade NOTE: excluded shader from OpenGL ES 2.0 because it uses non-square matrices
@@ -292,9 +291,6 @@ Shader "KK/Ground_Multi_NoUV"
 			//fixed4 glow = tex2D(_Emissive, (IN.uv_MainTex));
 			//o.Emission = glow.rgb * glow.aaa * _EmissiveColor.rgb * _EmissiveColor.aaa + stockEmit(IN.viewDir, normal, _RimColor, _RimFalloff, _TemperatureColor) * _Opacity;
 			o.Emission = stockEmit(IN.viewDir, normal, _RimColor, _RimFalloff, _TemperatureColor) * _Opacity;
-
-			//controlled directly by shader property
-			o.Alpha = _Opacity;
 
 
 			//apply the standard shader param multipliers to the sampled/computed values.
