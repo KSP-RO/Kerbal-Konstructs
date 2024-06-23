@@ -9,8 +9,7 @@ namespace KerbalKonstructs
 {
     class KKGraphics
     {
-        private static Dictionary<string, Shader> allShaders = new Dictionary<string, Shader>();
-        private static bool loadedShaders = false;
+        private static Dictionary<string, Shader> assetBundleShaders = new Dictionary<string, Shader>();
         private static bool loadedMaterials = false;
 
         private static Dictionary<string, Texture2D> cachedTextures = new Dictionary<string, Texture2D>();
@@ -23,65 +22,37 @@ namespace KerbalKonstructs
 
         private static Dictionary<string, Texture2D> normalMaps = new Dictionary<string, Texture2D>();
 
-
         /// <summary>
-        /// Load all shaders into the system and fill our shader database.
-        /// </summary>
-        internal static void LoadShaders()
-        {
-            foreach (var shader in Resources.FindObjectsOfTypeAll<Shader>())
-            {
-                if (!allShaders.ContainsKey(shader.name))
-                {
-                    allShaders.Add(shader.name, shader);
-                    // Debug Code
-                    //Log.Normal("Loaded shader: " + shader.name);
-                }
-            }
-            loadedShaders = true;
-        }
-
-        internal static bool HasShader(string name)
-        {
-            if (!loadedShaders)
-            {
-                LoadShaders();
-            }
-            return allShaders.ContainsKey(name);
-        }
-
-
-        /// <summary>
-        /// Replacement for Shader.Find() function, as we return also shaders, that are through KSP asset bundles (with autoload on)
+        /// Return shaders loaded from KSP asset bundles (with autoload on), then fallback to Shader.Find
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
         internal static Shader GetShader(string name)
         {
-            if (!loadedShaders)
-            {
-                LoadShaders();
-            }
+            Shader shader = null;
 
-            if (allShaders.ContainsKey(name))
+            if (assetBundleShaders.ContainsKey(name))
             {
-                return allShaders[name];
+                shader = assetBundleShaders[name];
             }
             else
+            {
+                shader = Shader.Find(name);
+            }
+
+            if (shader == null)
             {
                 Log.UserError("AdvTexture: Shader not found: " + name);
                 Log.Trace();
                 // return the error Shader, if we have one
-                if (allShaders.ContainsKey("Hidden/InternalErrorShader"))
+                if (assetBundleShaders.ContainsKey("Hidden/InternalErrorShader"))
                 {
                     //Log.UserWarning("Cannot load shader: " + name);
-                    return allShaders["Hidden/InternalErrorShader"];
-                }
-                else
-                {
-                    return null;
+                    return assetBundleShaders["Hidden/InternalErrorShader"];
                 }
             }
+
+            return shader;
         }
 
 
@@ -143,7 +114,7 @@ namespace KerbalKonstructs
             else
             {
                 GameDatabase.Instance.databaseShaders.AddUnique(newShader);
-                allShaders.Add(newShader.name, newShader);
+                assetBundleShaders.Add(newShader.name, newShader);
                 Log.Normal("Loaded Shader: " + newShader.name + " from file: " + shaderName);
             }
 
