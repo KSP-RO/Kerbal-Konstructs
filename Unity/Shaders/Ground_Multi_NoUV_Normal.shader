@@ -306,7 +306,14 @@ Shader "KK/Ground_Multi_NoUV"
 			o.Albedo = fog.rgb;
 			o.Emission *= fog.a;
         	o.Specular = (0);
-			// o.SpecularColor = (0,0,0,0);
+			
+
+#if UNITY_PASS_DEFERRED
+			// In deferred rendering do not use the flat ambient because Deferred adds its own ambient as a composite of flat ambient and probe
+			unity_SHAr = 0.0.xxxx;
+			unity_SHAg = 0.0.xxxx;
+			unity_SHAb = 0.0.xxxx;
+#endif
 		}
 
         ENDCG
