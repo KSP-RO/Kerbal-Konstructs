@@ -14,7 +14,7 @@
 
         Stencil
         {
-            Ref 4
+            Ref 3
             Comp Always
             Pass Replace
         }  

@@ -24,7 +24,7 @@ Shader "KK/Diffuse_Multiply_Random"
 
 		Stencil
 		{
-			Ref 4
+			Ref 3
 			Comp Always
 			Pass Replace
 		}  

@@ -50,7 +50,7 @@ Shader "KK/Ground_Multi_NoUV"
 
 		Stencil
 		{
-			Ref 4
+			Ref 3
 			Comp Always
 			Pass Replace
 		}  
