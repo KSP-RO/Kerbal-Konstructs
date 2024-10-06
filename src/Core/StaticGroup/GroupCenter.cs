@@ -93,6 +93,7 @@ namespace KerbalKonstructs.Core
                 {
                     Group = oldName + "_" + index.ToString();
                     index++;
+                    key = dbKey;
                 }
             }
 
