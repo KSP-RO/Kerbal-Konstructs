@@ -58,15 +58,15 @@ Shader "KK/Ground_Multi_NoUV"
         CGPROGRAM
         // Upgrade NOTE: excluded shader from OpenGL ES 2.0 because it uses non-square matrices
         #pragma exclude_renderers gles
-        //
-        #pragma surface surf BlinnPhong fullforwardshadows nofog
-
+        
+        #pragma surface surf BlinnPhongKSP fullforwardshadows nofog
 
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
 
 		//#include "TileRandom-include.cginc"
 		#include "TileRandom2-include.cginc"
+		#include "LightingKSP.cginc"
 		#include "KSP-include.cginc"
 
     	sampler2D _BlendMaskTexture;

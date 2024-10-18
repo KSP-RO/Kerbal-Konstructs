@@ -34,10 +34,11 @@ Shader "KK/Diffuse_Multiply_Random"
         #pragma exclude_renderers gles
         
 		// Physically based Standard lighting model, and enable shadows on all light types
-        #pragma surface surf BlinnPhong fullforwardshadows nofog
+        #pragma surface surf BlinnPhongKSP fullforwardshadows nofog
  
         #pragma target 3.0
 
+		#include "LightingKSP.cginc"
         #include "KSP-include.cginc"
 		#include "TileRandom2-include.cginc"
 		//#include "TileRandom-include.cginc"
@@ -55,7 +56,6 @@ Shader "KK/Diffuse_Multiply_Random"
 		//float4 _EmissiveColor;
 
 		//standard shader params for adjusting color/etc
-		float4 _Color;
 		float _MakeGrayScale;
 
 		struct Input
