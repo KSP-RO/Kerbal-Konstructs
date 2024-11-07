@@ -67,7 +67,7 @@ namespace KerbalKonstructs
                     bundleFileName = "kkshaders.osx";
                     break;
                 case RuntimePlatform.LinuxPlayer:
-                    bundleFileName = "kkshaders.osx";
+                    bundleFileName = "kkshaders.linux";
                     break;
                 default:
                     bundleFileName = "kkshaders.windows";
@@ -106,8 +106,10 @@ namespace KerbalKonstructs
         private static void LoadAndRegisterShader(AssetBundle bundle , string shaderName)
         {
             Shader newShader = bundle.LoadAsset<Shader>(shaderName);
+            if (newShader == null) { return; } // This file is not a shader; ignore it.
+
             GameObject.DontDestroyOnLoad(newShader);
-            if (newShader == null || !newShader.isSupported)
+            if (!newShader.isSupported)
             {
                 Log.Error("could not load shader: " + shaderName + " from: " + bundle.name);
             }
