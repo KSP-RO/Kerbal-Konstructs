@@ -190,7 +190,7 @@ namespace KerbalKonstructs.Core
             RefLongitude = (float)(CelestialBody.GetLatitudeAndLongitude(gameObject.transform.position).y);
             RadialPosition = radialPosition;
 
-            gameObject.transform.localScale = origScale * ModelScale;
+            gameObject.transform.localScale = origScale != Vector3.zero ? origScale * ModelScale : Vector3.one * ModelScale;
 
             RelativePosition = gameObject.transform.localPosition;
             Orientation = gameObject.transform.localEulerAngles;
