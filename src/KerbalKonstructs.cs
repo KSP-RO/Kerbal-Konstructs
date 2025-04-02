@@ -1040,12 +1040,12 @@ namespace KerbalKonstructs
 
                 ConfigParser.ParseModelConfig(model, conf.config);
 
-                if (model.mesh.Contains('.'))
+                if (model.mesh.Contains('.mu'))
                 {
                     model.mesh = model.mesh.Substring(0, model.mesh.LastIndexOf('.'));
                     //                model.settings = KKAPI.loadConfig(conf.config, KKAPI.getModelSettings());
                 }
-                model.prefab = GameDatabase.Instance.GetModelPrefab(model.path + "/" + model.mesh);
+                model.prefab = GameDatabase.Instance.GetModelPrefab(model.path == "/" ? "" : model.path) + "/" + model.mesh);
 
                 if (model.prefab == null)
                 {
