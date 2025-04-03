@@ -1040,7 +1040,7 @@ namespace KerbalKonstructs
 
                 ConfigParser.ParseModelConfig(model, conf.config);
 
-                if (model.mesh.Contains('.mu'))
+                if (model.mesh.Contains('.'))
                 {
                     model.mesh = model.mesh.Substring(0, model.mesh.LastIndexOf('.'));
                     //                model.settings = KKAPI.loadConfig(conf.config, KKAPI.getModelSettings());
