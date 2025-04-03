@@ -1045,7 +1045,7 @@ namespace KerbalKonstructs
                     model.mesh = model.mesh.Substring(0, model.mesh.LastIndexOf('.'));
                     //                model.settings = KKAPI.loadConfig(conf.config, KKAPI.getModelSettings());
                 }
-                model.prefab = GameDatabase.Instance.GetModelPrefab(model.path == "/" ? "" : model.path) + "/" + model.mesh);
+                model.prefab = GameDatabase.Instance.GetModelPrefab((model.path == "/" ? "" : model.path) + "/" + model.mesh);
 
                 if (model.prefab == null)
                 {
