@@ -382,7 +382,7 @@ namespace KerbalKonstructs.Core
         /// Writes out the GroupCenter config
         /// </summary>
         /// <param name="instance"></param>
-        internal void Save()
+        public void Save()
         {
             if (isBuiltIn)
             {

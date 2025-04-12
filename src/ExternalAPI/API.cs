@@ -258,6 +258,22 @@ namespace KerbalKonstructs
             return false;
         }
 
+        public static GroupCenter GetGroupCenter(string name, string bodyName = null)
+        {
+            if (bodyName == null)
+            {
+                bodyName = StaticDatabase.lastActiveBody.name;
+            }   
+
+            string groupNameB = $"{bodyName}_{name}";
+            if (StaticDatabase.HasGroupCenter(groupNameB))
+            {
+                return StaticDatabase.GetGroupCenter(groupNameB);
+            }
+            Log.UserWarning($"API:GetGroupCenter: group with name {name} does not exists.");
+            return null;
+        }
+
         /// <summary>
         /// Copies all statics from a group to another group
         /// </summary>

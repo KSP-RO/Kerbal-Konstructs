@@ -8,7 +8,7 @@ namespace KerbalKonstructs.UI
     public class GroupEditor : KKWindow
     {
 
-        private static GroupEditor _instance = null;
+        protected static GroupEditor _instance = null;
         public static GroupEditor instance
         {
             get
@@ -23,26 +23,26 @@ namespace KerbalKonstructs.UI
         }
 
         #region Variable Declarations
-        private List<Transform> transformList = new List<Transform>();
-        private CelestialBody body;
-        private bool showNameField = false;
+        protected List<Transform> transformList = new List<Transform>();
+        protected CelestialBody body;
+        protected bool showNameField = false;
 
-        private string newGroupName = "";
+        protected string newGroupName = "";
 
-        internal Boolean foldedIn = false;
-        internal Boolean doneFold = false;
+        public Boolean foldedIn = false;
+        public Boolean doneFold = false;
 
 
 
         #region Texture Definitions
         // Texture definitions
-        internal Texture tHorizontalSep = GameDatabase.Instance.GetTexture("KerbalKonstructs/Assets/horizontalsep2", false);
-        internal Texture tCopyPos = GameDatabase.Instance.GetTexture("KerbalKonstructs/Assets/copypos", false);
-        internal Texture tPastePos = GameDatabase.Instance.GetTexture("KerbalKonstructs/Assets/pastepos", false);
-        internal Texture tSnap = GameDatabase.Instance.GetTexture("KerbalKonstructs/Assets/snapto", false);
-        internal Texture tFoldOut = GameDatabase.Instance.GetTexture("KerbalKonstructs/Assets/foldin", false);
-        internal Texture tFoldIn = GameDatabase.Instance.GetTexture("KerbalKonstructs/Assets/foldout", false);
-        internal Texture tFolded = GameDatabase.Instance.GetTexture("KerbalKonstructs/Assets/foldout", false);
+        public Texture tHorizontalSep = GameDatabase.Instance.GetTexture("KerbalKonstructs/Assets/horizontalsep2", false);
+        public Texture tCopyPos = GameDatabase.Instance.GetTexture("KerbalKonstructs/Assets/copypos", false);
+        public Texture tPastePos = GameDatabase.Instance.GetTexture("KerbalKonstructs/Assets/pastepos", false);
+        public Texture tSnap = GameDatabase.Instance.GetTexture("KerbalKonstructs/Assets/snapto", false);
+        public Texture tFoldOut = GameDatabase.Instance.GetTexture("KerbalKonstructs/Assets/foldin", false);
+        public Texture tFoldIn = GameDatabase.Instance.GetTexture("KerbalKonstructs/Assets/foldout", false);
+        public Texture tFolded = GameDatabase.Instance.GetTexture("KerbalKonstructs/Assets/foldout", false);
 
 
         #endregion
@@ -54,7 +54,7 @@ namespace KerbalKonstructs.UI
 
         #region GUI Windows
         // GUI Windows
-        internal Rect toolRect = new Rect(300, 35, 330, 350);
+        public Rect toolRect = new Rect(300, 35, 330, 350);
 
         #endregion
 
@@ -62,33 +62,33 @@ namespace KerbalKonstructs.UI
         #region Holders
         // Holders
 
-        internal static GroupCenter selectedGroup = null;
-        internal GroupCenter selectedObjectPrevious = null;
+        public static GroupCenter selectedGroup = null;
+        public GroupCenter selectedObjectPrevious = null;
 
-        internal string refLat, refLng, headingStr;
+        public string refLat, refLng, headingStr;
 
         //internal static String facType = "None";
         //internal static String sGroup = "Ungrouped";
-        private float increment = 1f;
+        protected float increment = 1f;
 
 
-        private VectorRenderer upVR = new VectorRenderer();
-        private VectorRenderer fwdVR = new VectorRenderer();
-        private VectorRenderer rightVR = new VectorRenderer();
+        protected VectorRenderer upVR = new VectorRenderer();
+        protected VectorRenderer fwdVR = new VectorRenderer();
+        protected VectorRenderer rightVR = new VectorRenderer();
 
-        private VectorRenderer northVR = new VectorRenderer();
-        private VectorRenderer eastVR = new VectorRenderer();
-
-
-        private static Space referenceSystem = Space.Self;
-
-        private static Vector3d position = Vector3d.zero;
-        private Vector3d savedReferenceVector = Vector3d.zero;
+        protected VectorRenderer northVR = new VectorRenderer();
+        protected VectorRenderer eastVR = new VectorRenderer();
 
 
-        private static Vector3 startPosition = Vector3.zero;
+        protected static Space referenceSystem = Space.Self;
 
-        internal static float maxEditorRange = 250;
+        protected static Vector3d position = Vector3d.zero;
+        protected Vector3d savedReferenceVector = Vector3d.zero;
+
+
+        protected static Vector3 startPosition = Vector3.zero;
+
+        public static float maxEditorRange = 250;
 
         #endregion
 
@@ -129,7 +129,7 @@ namespace KerbalKonstructs.UI
         /// Wrapper to draw editors
         /// </summary>
         /// <param name="groupCenter"></param>
-        internal void drawEditor(GroupCenter groupCenter)
+        public void drawEditor(GroupCenter groupCenter)
         {
             if (groupCenter == null)
             {
@@ -163,7 +163,7 @@ namespace KerbalKonstructs.UI
         /// Instance Editor window
         /// </summary>
         /// <param name="windowID"></param>
-        void GroupEditorWindow(int windowID)
+        protected virtual void GroupEditorWindow(int windowID)
         {
 
             UpdateVectors();
@@ -533,7 +533,7 @@ namespace KerbalKonstructs.UI
         #region Utility Functions
 
 
-        internal void DeleteGroupCenter()
+        public void DeleteGroupCenter()
         {
             if (selectedObjectPrevious == selectedGroup)
             {
@@ -570,7 +570,7 @@ namespace KerbalKonstructs.UI
         /// <summary>
         /// the starting position of direction vectors (a bit right and up from the Objects position)
         /// </summary>
-        private Vector3 vectorDrawPosition
+        protected Vector3 vectorDrawPosition
         {
             get
             {
@@ -605,7 +605,7 @@ namespace KerbalKonstructs.UI
         /// <summary>
         /// gives a vector to the east
         /// </summary>
-        private Vector3 eastVector
+        protected Vector3 eastVector
         {
             get
             {
@@ -616,7 +616,7 @@ namespace KerbalKonstructs.UI
         /// <summary>
         /// vector to north
         /// </summary>
-        private Vector3 northVector
+        protected Vector3 northVector
         {
             get
             {
@@ -625,7 +625,7 @@ namespace KerbalKonstructs.UI
             }
         }
 
-        private Vector3 upVector
+        protected Vector3 upVector
         {
             get
             {
@@ -637,7 +637,7 @@ namespace KerbalKonstructs.UI
         /// <summary>
         /// Sets the vectors active and updates thier position and directions
         /// </summary>
-        private void UpdateVectors()
+        protected void UpdateVectors()
         {
             if (selectedGroup == null)
             {
@@ -687,7 +687,7 @@ namespace KerbalKonstructs.UI
         /// <summary>
         /// creates the Vectors for later display
         /// </summary>
-        private void SetupVectors()
+        protected void SetupVectors()
         {
             // draw vectors
             fwdVR.Color = new Color(0, 0, 1);
@@ -730,7 +730,7 @@ namespace KerbalKonstructs.UI
         /// <summary>
         /// stops the drawing of the vectors
         /// </summary>
-        private void CloseVectors()
+        protected void CloseVectors()
         {
             northVR.SetShow(false);
             eastVR.SetShow(false);
@@ -744,7 +744,7 @@ namespace KerbalKonstructs.UI
         /// </summary>
         /// <param name="north"></param>
         /// <param name="east"></param>
-        internal void Setlatlng(double north, double east)
+        public void Setlatlng(double north, double east)
         {
             body = Planetarium.fetch.CurrentMainBody;
             double latOffset = north / (body.Radius * KKMath.deg2rad);
@@ -764,7 +764,7 @@ namespace KerbalKonstructs.UI
         /// changes the rotation by a defined amount
         /// </summary>
         /// <param name="increment"></param>
-        internal void SetRotation(float increment)
+        public void SetRotation(float increment)
         {
             selectedGroup.RotationAngle += (float)increment;
             selectedGroup.RotationAngle = (360f + selectedGroup.RotationAngle) % 360f;
@@ -776,7 +776,7 @@ namespace KerbalKonstructs.UI
         /// Updates the StaticObject position with a new transform
         /// </summary>
         /// <param name="direction"></param>
-        internal void SetTransform(Vector3 direction)
+        public void SetTransform(Vector3 direction)
         {
             // adjust transform for scaled models
             direction = direction / selectedGroup.ModelScale;
@@ -789,7 +789,7 @@ namespace KerbalKonstructs.UI
         }
 
 
-        internal void OnMoveCallBack(Vector3 vector)
+        public void OnMoveCallBack(Vector3 vector)
         {
             // Log.Normal("OnMove: " + vector.ToString());
             //moveGizmo.transform.position += 3* vector;
@@ -805,13 +805,13 @@ namespace KerbalKonstructs.UI
 
         }
 
-        internal void WhenMovedCallBack(Vector3 vector)
+        public void WhenMovedCallBack(Vector3 vector)
         {
             ApplySettings();
             //Log.Normal("WhenMoved: " + vector.ToString());
         }
 
-        internal void UpdateMoveGizmo()
+        public void UpdateMoveGizmo()
         {
             EditorGizmo.CloseGizmo();
             EditorGizmo.SetupMoveGizmo(selectedGroup.gameObject, Quaternion.identity, OnMoveCallBack, WhenMovedCallBack);
@@ -819,7 +819,7 @@ namespace KerbalKonstructs.UI
 
 
 
-        internal void ApplyInputStrings()
+        public void ApplyInputStrings()
         {
 
             selectedGroup.RefLatitude = double.Parse(refLat);
@@ -845,7 +845,7 @@ namespace KerbalKonstructs.UI
         }
 
 
-        internal void UpdateStrings()
+        public void UpdateStrings()
         {
             refLat = Math.Round(selectedGroup.RefLatitude, 4).ToString();
             refLng = Math.Round(selectedGroup.RefLongitude, 4).ToString();
@@ -857,7 +857,7 @@ namespace KerbalKonstructs.UI
         /// <summary>
         /// Saves the current instance settings to the object.
         /// </summary>
-        internal void ApplySettings()
+        public void ApplySettings()
         {
             selectedGroup.Update();
             UpdateStrings();
@@ -865,7 +865,7 @@ namespace KerbalKonstructs.UI
         }
 
 
-        internal void CheckEditorKeys()
+        public void CheckEditorKeys()
         {
             if (selectedGroup != null)
             {
