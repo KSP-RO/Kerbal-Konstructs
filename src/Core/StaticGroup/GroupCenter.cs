@@ -424,6 +424,7 @@ namespace KerbalKonstructs.Core
                 instance.Orientation = sourceInstance.Orientation;
                 instance.CelestialBody = CelestialBody;
                 instance.ModelScale = sourceInstance.ModelScale;
+                instance.VariantName = sourceInstance.VariantName;
 
                 instance.Group = Group;
                 instance.groupCenter = this;
