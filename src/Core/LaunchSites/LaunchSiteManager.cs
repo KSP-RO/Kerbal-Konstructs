@@ -253,7 +253,7 @@ namespace KerbalKonstructs.Core
         /// <summary>
         /// Called when a Launchsite is closed
         /// </summary>
-        internal static void CloseLaunchSite(KKLaunchSite site)
+        public static void CloseLaunchSite(KKLaunchSite site)
         {
             site.SetClosed();
             if (Expansions.ExpansionsLoader.IsExpansionInstalled("MakingHistory") && HighLogic.LoadedScene == GameScenes.EDITOR)
@@ -266,7 +266,7 @@ namespace KerbalKonstructs.Core
         /// <summary>
         /// Function that is called when a launchSite is opened
         /// </summary>
-        internal static void OpenLaunchSite(KKLaunchSite site)
+        public static void OpenLaunchSite(KKLaunchSite site)
         {
             if (site.staticInstance.isSpawned && site.staticInstance.destructible != null)
             {
