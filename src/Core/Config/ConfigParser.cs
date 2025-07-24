@@ -416,7 +416,7 @@ namespace KerbalKonstructs.Core
             }
 
             Log.Debug("Saving File: " + pathname);
-            StaticInstance[] allInstances = StaticDatabase.allStaticInstances.Where(instance => instance.configPath == pathname).ToArray();
+            StaticInstance[] allInstances = StaticDatabase.allStaticInstances.Where(instance => instance.configPath == pathname && !instance.isInSavegame).ToArray();
             StaticInstance firstInstance = allInstances.First();
             ConfigNode instanceConfig = null;
 
@@ -483,6 +483,8 @@ namespace KerbalKonstructs.Core
 
             foreach (GroupCenter group in StaticDatabase.allGroupCenters)
             {
+                if (group.isInSavegame) continue;
+
                 parsedModels.Clear();
 
                 if (!System.IO.Directory.Exists(basePath))
@@ -505,6 +507,8 @@ namespace KerbalKonstructs.Core
                 }
                 foreach (StaticInstance instance in group.childInstances)
                 {
+                    if (instance.isInSavegame) continue;
+
                     if (parsedModels.Contains(instance.model.name))
                     {
                         continue;

@@ -208,7 +208,8 @@
     <Compile Include="Core\LaunchSites\LaunchSite.cs" />
     <Compile Include="Facilities\Research\Research.cs" />
     <Compile Include="Modules\Career\CareerEditor.cs" />
-    <Compile Include="Modules\Career\CareerObjects.cs" />
+	<Compile Include="Modules\Career\CareerGroups.cs" />
+	<Compile Include="Modules\Career\CareerObjects.cs" />
     <Compile Include="Modules\Career\CareerScenario.cs" />
     <Compile Include="Modules\Career\CareerState.cs" />
     <Compile Include="Modules\Career\CareerUtils.cs" />

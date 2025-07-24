@@ -1270,6 +1270,8 @@ namespace KerbalKonstructs
 
             foreach (StaticInstance instance in StaticDatabase.GetInstancesFromModel(model))
             {
+                if (instance.isInSavegame) continue;
+
                 ConfigNode inst = new ConfigNode("Instances");
                 ConfigParser.WriteInstanceConfig(instance, inst);
                 modelConfig.nodes.Add(inst);
