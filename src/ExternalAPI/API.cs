@@ -10,11 +10,11 @@ namespace KerbalKonstructs
     public static class API
     {
 
-        internal static Action<GameObject> OnBuildingSpawned = delegate { };
-        internal static Action<StaticInstance> OnStaticClicked = delegate { };
-        internal static Action<StaticInstance> OnStaticMouseEnter = delegate { };
-        internal static Action<StaticInstance> OnStaticMouseExit = delegate { };
-        internal static Action<GroupCenter> OnGroupSaved = delegate { };
+        public static Action<GameObject> OnBuildingSpawned = delegate { };
+        public static Action<StaticInstance> OnStaticClicked = delegate { };
+        public static Action<StaticInstance> OnStaticMouseEnter = delegate { };
+        public static Action<StaticInstance> OnStaticMouseExit = delegate { };
+        public static Action<GroupCenter> OnGroupSaved = delegate { };
 
         public static string SpawnObject(string modelName)
         {
