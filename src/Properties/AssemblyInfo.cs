@@ -41,9 +41,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("@MAJOR@.@MINOR@.@PATCH@.@BUILD@")]
 [assembly: AssemblyInformationalVersion("@MAJOR@.@MINOR@.@PATCH@.@BUILD@")]
 #else
-[assembly: AssemblyFileVersion("1.9.1.0")]
-[assembly: AssemblyInformationalVersion("1.9.1.0")]
+[assembly: AssemblyFileVersion("1.11.0.0")]
+[assembly: AssemblyInformationalVersion("1.11.0.0")]
 #endif
 
-[assembly: KSPAssembly("KerbalKonstructs", 1, 9, 1)]
+[assembly: KSPAssembly("KerbalKonstructs", 1, 11, 0)]
 
