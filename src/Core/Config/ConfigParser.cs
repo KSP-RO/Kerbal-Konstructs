@@ -417,6 +417,12 @@ namespace KerbalKonstructs.Core
 
             Log.Debug("Saving File: " + pathname);
             StaticInstance[] allInstances = StaticDatabase.allStaticInstances.Where(instance => instance.configPath == pathname && !instance.isInSavegame).ToArray();
+            if (allInstances.Length == 0)
+            {
+                Debug.Log(pathname + " has no instances to save.");
+                return;
+            }
+
             StaticInstance firstInstance = allInstances.First();
             ConfigNode instanceConfig = null;
 
