@@ -96,7 +96,7 @@ namespace KerbalKonstructs.UI
 
         protected static Vector3 startPosition = Vector3.zero;
 
-        public static float maxEditorRange = 250;
+        public static float maxEditorRange = 0;
 
         #endregion
 
@@ -442,6 +442,13 @@ namespace KerbalKonstructs.UI
                     if (editorMode == GroupEditorMode.Group)
                     {
                         selectedGroup.RadiusOffset -= increment;
+                        ApplySettings();
+                        if (!CheckRange(selectedGroup.gameObject.transform.position))
+                        {
+                            Log.Debug("Position out of range, reverting changes.");
+                            selectedGroup.RadiusOffset += increment;
+                            ApplySettings();
+                        }
                     }
                     else if (editorMode == GroupEditorMode.StaticOffset)
                     {
@@ -463,6 +470,13 @@ namespace KerbalKonstructs.UI
                     if (editorMode == GroupEditorMode.Group)
                     {
                         selectedGroup.RadiusOffset += increment;
+                        ApplySettings();
+                        if (!CheckRange(selectedGroup.gameObject.transform.position))
+                        {
+                            Log.Debug("Position out of range, reverting changes.");
+                            selectedGroup.RadiusOffset -= increment;
+                            ApplySettings();
+                        }
                     }
                     else if (editorMode == GroupEditorMode.StaticOffset)
                     {
@@ -470,13 +484,13 @@ namespace KerbalKonstructs.UI
                         {
                             instance.RelativePosition.y += increment;
 
-                            instance.RadiusOffset -= increment;
+                            instance.RadiusOffset += increment;
 
                             instance.gameObject.transform.localPosition += Vector3.up * increment;
                         });
+                        ApplySettings();
                     }
 
-                    ApplySettings();
                 }
             }
             GUILayout.EndHorizontal();
@@ -584,6 +598,7 @@ namespace KerbalKonstructs.UI
 
         #region Utility Functions
 
+        public bool CheckRange(Vector3 targetPos) => maxEditorRange == 0 || FlightGlobals.ActiveVessel == null || Vector3.Distance(FlightGlobals.ActiveVessel.transform.position, targetPos) <= maxEditorRange;
 
         public void DeleteGroupCenter()
         {
@@ -804,11 +819,26 @@ namespace KerbalKonstructs.UI
 
             if (editorMode == GroupEditorMode.Group)
             {
+                double oldLat = selectedGroup.RefLatitude;
+                double oldLon = selectedGroup.RefLongitude;
+                Vector3 oldRad = selectedGroup.RadialPosition;
+
                 selectedGroup.RefLatitude += latOffset;
 
                 selectedGroup.RefLongitude += lonOffset * Math.Cos(Mathf.Deg2Rad * selectedGroup.RefLatitude);
 
                 selectedGroup.RadialPosition = body.GetRelSurfaceNVector(selectedGroup.RefLatitude, selectedGroup.RefLongitude).normalized * body.Radius;
+
+                ApplySettings();
+
+                if (!CheckRange(selectedGroup.gameObject.transform.position))
+                {
+                    Log.Debug("Position out of range, reverting changes.");
+                    selectedGroup.RefLatitude = oldLat;
+                    selectedGroup.RefLongitude = oldLon;
+                    selectedGroup.RadialPosition = oldRad;
+                    ApplySettings();
+                }
             }
             else if (editorMode == GroupEditorMode.StaticOffset)
             {
@@ -822,10 +852,10 @@ namespace KerbalKonstructs.UI
                     instance.RelativePosition = instance.gameObject.transform.localPosition;
                     instance.RadiusOffset = (float)((instance.surfaceHeight - instance.groupCenter.surfaceHeight) + instance.RelativePosition.y);
 
+                    ApplySettings();
                 });
             }
 
-            ApplySettings();
         }
 
 
@@ -875,6 +905,12 @@ namespace KerbalKonstructs.UI
 
             if (editorMode == GroupEditorMode.Group)
             {
+                if (!CheckRange(EditorGizmo.moveGizmo.transform.position))
+                {
+                    Log.Debug("Position out of range, reverting changes.");
+                    return;
+                }
+
                 selectedGroup.gameObject.transform.position = EditorGizmo.moveGizmo.transform.position;
                 selectedGroup.RadialPosition = selectedGroup.gameObject.transform.localPosition;
 
@@ -905,8 +941,6 @@ namespace KerbalKonstructs.UI
         {
             ApplySettings();
             //Log.Normal("WhenMoved: " + vector.ToString());
-
-            if (editorMode == GroupEditorMode.StaticOffset) EditorGizmo.moveGizmo.transform.position = selectedGroup.gameObject.transform.position;
         }
 
         public void UpdateMoveGizmo()

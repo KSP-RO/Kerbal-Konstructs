@@ -779,6 +779,7 @@ namespace KerbalKonstructs.UI
                     GroupEditor.instance.Close();
                     GroupEditor.selectedGroup = groupCenter;
                     // MapDecalEditor.selectedDecal = mapDecalInstance;
+                    GroupEditor.maxEditorRange = 0;
                     GroupEditor.instance.Open();
                 }
 
@@ -819,6 +820,7 @@ namespace KerbalKonstructs.UI
                     }
                     else
                     {
+                        GroupEditor.maxEditorRange = 0;
                         GroupEditor.instance.Open();
                         Log.Normal("Group Editor spawned");
                     }
