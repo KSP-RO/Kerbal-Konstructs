@@ -1345,6 +1345,8 @@ namespace KerbalKonstructs
 
         internal void SaveGroupCenters()
         {
+            StaticDatabase.allGroupCenters.Where(g => g.isInSavegame && !string.IsNullOrEmpty(g.configPath)).ToList().ForEach(g => deletedGroups.Add(g));
+
             foreach (GroupCenter center in deletedGroups)
             {
                 if (File.Exists(KSPUtil.ApplicationRootPath + "GameData/" + center.configPath))
