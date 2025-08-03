@@ -1,5 +1,4 @@
 ﻿using KerbalKonstructs.Core;
-using KerbalKonstructs.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -286,7 +285,7 @@ namespace KerbalKonstructs.UI
             {
                 //GUILayout.FlexibleSpace();
                 GUILayout.Label("Increment: ");
-                GUILayout.TextField(increment.ToString(), GUILayout.Width(48));
+                if (float.TryParse(GUILayout.TextField(increment.ToString(), GUILayout.Width(48)), out float inc)) increment = inc;
                 GUILayout.FlexibleSpace();
             }
             GUILayout.EndHorizontal();
@@ -417,9 +416,34 @@ namespace KerbalKonstructs.UI
             GUILayout.BeginHorizontal();
             {
                 GUILayout.Label("Latitude");
-                GUILayout.TextField(latitude.ToString("#0.0000000"));
+                if (double.TryParse(GUILayout.TextField(latitude.ToString("#0.0000000"), 12, GUILayout.Width(100)), out double lat) && lat != Math.Round(latitude, 7))
+                {
+                    Debug.Log($"KK Mapdecal editor latitude: {latitude.ToString("#0.0000000")}, lat: {lat}, rounded: {Math.Round(latitude, 7)}, floor: {Math.Floor(latitude * 10000000) / 10000000}");
+
+                    latitude = Math.Round(lat, 7);
+
+                    Vector3d newpos = body.GetWorldSurfacePosition(latitude, longitude, altitude);
+                    selectedDecal.mapDecal.transform.position = newpos;
+
+                    referenceVector = body.GetRelSurfaceNVector(latitude, longitude).normalized * body.Radius;
+
+                    UpdateMoveGizmo();
+                }
+
                 GUILayout.Label("Longitude");
-                GUILayout.TextField(longitude.ToString("#0.0000000"));
+                if (double.TryParse(GUILayout.TextField(longitude.ToString("#0.0000000"), 12, GUILayout.Width(100)), out double lon) && lon != Math.Round(longitude, 7))
+                {
+                    Debug.Log($"KK Mapdecal editor longitude: {longitude.ToString("#0.0000000")}, lon: {lon}, rounded: {Math.Round(longitude, 7)}, floor: {Math.Floor(longitude * 10000000) / 10000000}");
+
+                    longitude = Math.Round(lon, 7);
+
+                    Vector3d newpos = body.GetWorldSurfacePosition(latitude, longitude, altitude);
+                    selectedDecal.mapDecal.transform.position = newpos;
+
+                    referenceVector = body.GetRelSurfaceNVector(latitude, longitude).normalized * body.Radius;
+
+                    UpdateMoveGizmo();
+                }
             }
             GUILayout.EndHorizontal();
             GUILayout.Box(tHorizontalSep, BoxNoBorder, GUILayout.Height(4));
@@ -431,7 +455,7 @@ namespace KerbalKonstructs.UI
             {
                 GUILayout.Label("Heading:");
                 GUILayout.FlexibleSpace();
-                GUILayout.TextField(selectedDecal.Angle.ToString(), 9, GUILayout.Width(80));
+                if (float.TryParse(GUILayout.TextField(selectedDecal.Angle.ToString(), 9, GUILayout.Width(80)), out float angle) && angle != selectedDecal.Angle) SetRotation(angle);
 
                 if (GUILayout.RepeatButton("<<", GUILayout.Width(30), GUILayout.Height(23)) | GUILayout.Button("<", GUILayout.Width(30), GUILayout.Height(23)))
                     SetRotation(-increment);
@@ -449,7 +473,7 @@ namespace KerbalKonstructs.UI
             {
                 GUILayout.Label("Placement order:");
                 GUILayout.FlexibleSpace();
-                GUILayout.TextField(selectedDecal.Order.ToString(), 9, GUILayout.Width(80));
+                if (int.TryParse(GUILayout.TextField(selectedDecal.Order.ToString(), 9, GUILayout.Width(80)), out int order)) selectedDecal.Order = Math.Max(100000, order);
 
                 if (GUILayout.RepeatButton("<<", GUILayout.Width(30), GUILayout.Height(23)) | GUILayout.Button("<", GUILayout.Width(30), GUILayout.Height(23)))
                     selectedDecal.Order = Math.Max(100000, selectedDecal.Order - 1);
@@ -467,7 +491,8 @@ namespace KerbalKonstructs.UI
             {
                 GUILayout.Label("Radius:");
                 GUILayout.FlexibleSpace();
-                GUILayout.TextField(selectedDecal.Radius.ToString(), 9, GUILayout.Width(80));
+                //selectedDecal.Radius = double.Parse(GUILayout.TextField(selectedDecal.Radius.ToString(), 9, GUILayout.Width(80)));
+                if (double.TryParse(GUILayout.TextField(selectedDecal.Radius.ToString(), 9, GUILayout.Width(80)), out double radius)) selectedDecal.Radius = radius;
 
                 if (GUILayout.RepeatButton("<<", GUILayout.Width(30), GUILayout.Height(23)) | GUILayout.Button("<", GUILayout.Width(30), GUILayout.Height(23)))
                 {
@@ -503,7 +528,8 @@ namespace KerbalKonstructs.UI
             {
                 GUILayout.Label("Absolut offset:");
                 GUILayout.FlexibleSpace();
-                selectedDecal.AbsolutOffset = float.Parse(GUILayout.TextField(selectedDecal.AbsolutOffset.ToString(), 25, GUILayout.Width(75)));
+
+                if (float.TryParse(GUILayout.TextField(selectedDecal.AbsolutOffset.ToString(), 25, GUILayout.Width(75)), out float absOffset)) selectedDecal.AbsolutOffset = absOffset;
 
                 if (GUILayout.RepeatButton("<<", GUILayout.Width(30), GUILayout.Height(21)) | GUILayout.Button("<", GUILayout.Width(30), GUILayout.Height(21)))
                     SetTransform(Vector3.down * increment);
@@ -519,7 +545,7 @@ namespace KerbalKonstructs.UI
             {
                 selectHeightMap = true;
             }
-            GUILayout.TextField(selectedDecal.HeightMapName, GUILayout.Width(200));
+            GUILayout.Label(selectedDecal.HeightMapName, GUILayout.Width(200));
             GUILayout.EndHorizontal();
 
 
@@ -543,7 +569,7 @@ namespace KerbalKonstructs.UI
             {
                 GUILayout.Label("HeightMapDeformity:");
                 GUILayout.FlexibleSpace();
-                selectedDecal.HeightMapDeformity = double.Parse(GUILayout.TextField(selectedDecal.HeightMapDeformity.ToString(), 25, GUILayout.Width(75)));
+                if (double.TryParse(GUILayout.TextField(selectedDecal.HeightMapDeformity.ToString(), 25, GUILayout.Width(75)), out double deform)) selectedDecal.HeightMapDeformity = deform;
 
                 if (GUILayout.RepeatButton("<<", GUILayout.Width(30), GUILayout.Height(21)) | GUILayout.Button("<", GUILayout.Width(30), GUILayout.Height(21)))
                     selectedDecal.HeightMapDeformity -= increment;
@@ -558,7 +584,7 @@ namespace KerbalKonstructs.UI
             {
                 GUILayout.Label("SmoothHeight:");
                 GUILayout.FlexibleSpace();
-                selectedDecal.SmoothHeight = float.Parse(GUILayout.TextField(selectedDecal.SmoothHeight.ToString(), 25, GUILayout.Width(75)));
+                if (float.TryParse(GUILayout.TextField(selectedDecal.SmoothHeight.ToString(), 25, GUILayout.Width(75)), out float height)) selectedDecal.SmoothHeight = height;
 
                 if (GUILayout.RepeatButton("<<", GUILayout.Width(30), GUILayout.Height(21)) | GUILayout.Button("<", GUILayout.Width(30), GUILayout.Height(21)))
                 {
@@ -577,7 +603,7 @@ namespace KerbalKonstructs.UI
             {
                 selectColorMap = true;
             }
-            GUILayout.TextField(selectedDecal.ColorMapName, GUILayout.Width(200));
+            GUILayout.Label(selectedDecal.ColorMapName, GUILayout.Width(200));
             GUILayout.EndHorizontal();
 
 
@@ -601,7 +627,7 @@ namespace KerbalKonstructs.UI
             {
                 GUILayout.Label("SmoothColor:");
                 GUILayout.FlexibleSpace();
-                selectedDecal.SmoothColor = float.Parse(GUILayout.TextField(selectedDecal.SmoothColor.ToString(), 25, GUILayout.Width(75)));
+                if (float.TryParse(GUILayout.TextField(selectedDecal.SmoothColor.ToString(), 25, GUILayout.Width(75)), out float color)) selectedDecal.SmoothColor = color;
 
                 if (GUILayout.RepeatButton("<<", GUILayout.Width(30), GUILayout.Height(21)) | GUILayout.Button("<", GUILayout.Width(30), GUILayout.Height(21)))
                 {

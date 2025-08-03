@@ -336,6 +336,8 @@ namespace KerbalKonstructs.Core
         /// <param name="instance"></param>
         internal static void SaveMapDecalInstance(MapDecalInstance instance)
         {
+            if (instance.isInSavegame) return;
+
             if (!Directory.Exists(KSPUtil.ApplicationRootPath + "GameData/" + KerbalKonstructs.newInstancePath))
             {
                 Directory.CreateDirectory(KSPUtil.ApplicationRootPath + "GameData/" + KerbalKonstructs.newInstancePath);
@@ -344,7 +346,7 @@ namespace KerbalKonstructs.Core
             if (instance.configPath == null)
             {
                 instance.configPath = KerbalKonstructs.newInstancePath + "/KK_MapDecal_" + instance.Name + ".cfg";
-                if (System.IO.File.Exists(instance.configPath))
+                if (System.IO.File.Exists(KSPUtil.ApplicationRootPath + "GameData/" + instance.configPath))
                 {
                     instance.configPath = KerbalKonstructs.newInstancePath + "/KK_MapDecal_" + instance.Name + "_" + Guid.NewGuid() + ".cfg";
                 }
@@ -353,7 +355,7 @@ namespace KerbalKonstructs.Core
             ConfigNode masterNode = new ConfigNode("");
             ConfigNode instanceNode = new ConfigNode("KK_MapDecal");
 
-            if (!instance.isInSavegame) WriteMapDecalConfig(instance, instanceNode);
+            WriteMapDecalConfig(instance, instanceNode);
 
             masterNode.AddNode(instanceNode);
 
