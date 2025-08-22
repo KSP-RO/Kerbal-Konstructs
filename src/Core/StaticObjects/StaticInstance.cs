@@ -1,4 +1,5 @@
 ﻿using KerbalKonstructs.Modules;
+using KerbalKonstructs.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -634,6 +635,8 @@ namespace KerbalKonstructs.Core
 
         internal void Destroy()
         {
+            if (StaticsEditorGUI.selectedObject == this) StaticsEditorGUI.selectedObject = null;
+
             if (groupCenter != null)
             {
                 groupCenter.RemoveInstance(this);

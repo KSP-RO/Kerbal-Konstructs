@@ -451,6 +451,8 @@ namespace KerbalKonstructs.Core
                 KerbalKonstructs.instance.DeleteInstance(child);
             }
 
+            if (StaticsEditorGUI.GetActiveGroup() == this) StaticsEditorGUI.SetActiveGroup(null);
+
             StaticDatabase.RemoveGroupCenter(this);
             // check later when saving if this file is empty
 
