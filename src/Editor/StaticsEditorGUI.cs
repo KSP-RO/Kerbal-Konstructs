@@ -873,10 +873,6 @@ namespace KerbalKonstructs.UI
                     {
                         continue;
                     }
-                    if (groupCenter.isInSavegame)
-                    {
-                        continue;
-                    }
                     if (Vector3.Distance(FlightGlobals.ActiveVessel.transform.position, groupCenter.gameObject.transform.position) > KerbalKonstructs.localGroupRange)
                     {
                         continue;
