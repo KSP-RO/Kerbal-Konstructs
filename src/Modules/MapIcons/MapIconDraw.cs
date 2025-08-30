@@ -229,6 +229,8 @@ namespace KerbalKonstructs.Modules
                     continue;
                 }
 
+                if (groundStation.CelestialBody != body) continue;
+
                 Vector3 lsPosition = MapView.MapCamera.GetComponent<Camera>().WorldToScreenPoint(ScaledSpace.LocalToScaledSpace(launchSitePosition));
                 screenRect = new Rect((lsPosition.x - 8), (Screen.height - lsPosition.y) - 8, 16, 16);
 
