@@ -1,4 +1,4 @@
-﻿using KerbalKonstructs.Core;
+using KerbalKonstructs.Core;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -144,7 +144,7 @@ namespace KerbalKonstructs
                 normalHash += theByte.ToString("x2");
             }
 
-            string storagePath = KSPUtil.ApplicationRootPath + "PluginData/KerbalKonstructs/Normals/";
+            string storagePath = Path.Combine(KSPUtil.ApplicationRootPath, "GameData/KerbalKonstructs/Normals/");
 
             if (!Directory.Exists(storagePath))
             {
@@ -179,7 +179,7 @@ namespace KerbalKonstructs
             }
             // here you should never end
             Log.Error("Something went wrong for: " + texture.name);
-            Log.Error("Should be chached here: " + filename);
+            Log.Error("Should be cached here: " + filename);
 
             return null;
         }
@@ -197,7 +197,7 @@ namespace KerbalKonstructs
                 //Log.Error("Called with no Texture");
                 return;
             }
-            //Log.Normal("Normal Map ChacheName: " + filename);
+            //Log.Normal("Normal Map CacheName: " + filename);
 
             Material converter = new Material(GetShader("KK/Calc/NormalFromTexture"));
             converter.mainTexture = texture;

@@ -43,6 +43,8 @@ namespace KerbalKonstructs.Modules
 
         private bool cscIsOpen = false;
 
+        private const float KerbinRadius = 600000f;
+
         Rect screenRect;
 
         public override void Draw()
@@ -155,7 +157,7 @@ namespace KerbalKonstructs.Modules
                 Rect screenRect6 = new Rect((pos.x - 8), (Screen.height - pos.y) - 8, 16, 16);
                 // Distance between camera and spawnpoint sort of
                 float fPosZ = pos.z;
-                float fRadarRadius = 12800 / fPosZ;
+                float fRadarRadius = (12800 / fPosZ) * ((float)groundStation.CelestialBody.Radius / KerbinRadius);
 
                 if (fRadarRadius > 15) GUI.DrawTexture(screenRect6, UIMain.TrackingStationIcon, ScaleMode.ScaleToFit, true);
 
@@ -237,8 +239,7 @@ namespace KerbalKonstructs.Modules
                 // Distance between camera and spawnpoint sort of
                 float fPosZ = lsPosition.z;
 
-                float fRadarRadius = 12800 / fPosZ;
-                float fRadarOffset = fRadarRadius / 2;
+                float fRadarRadius = (12800 / fPosZ) * ((float)launchSite.body.Radius / KerbinRadius);
 
 
                 if (launchSite.icon != null)
@@ -272,7 +273,7 @@ namespace KerbalKonstructs.Modules
                 }
 
                 // Tooltip
-                if (!displayingTooltip && screenRect.Contains(Event.current.mousePosition))
+                if (!displayingTooltip && screenRect.Contains(Event.current.mousePosition) && fRadarRadius > 15)
                 {
                     //Only display one tooltip at a time
                     string sToolTip = "";
@@ -332,7 +333,7 @@ namespace KerbalKonstructs.Modules
                 Rect screenRect6 = new Rect((pos.x - 8), (Screen.height - pos.y) - 8, 16, 16);
                 // Distance between camera and spawnpoint sort of
                 float fPosZ = pos.z;
-                float fRadarRadius = 12800 / fPosZ;
+                float fRadarRadius = (12800 / fPosZ) * ((float)body.Radius / KerbinRadius);
 
                 if (fRadarRadius > 15)
                 {
