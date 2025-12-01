@@ -637,6 +637,11 @@ namespace KerbalKonstructs.Core
         {
             if (StaticsEditorGUI.selectedObject == this) StaticsEditorGUI.selectedObject = null;
 
+            if (launchSite != null)
+            {
+                LaunchSiteManager.DeleteLaunchSite(launchSite);
+            }
+
             if (groupCenter != null)
             {
                 groupCenter.RemoveInstance(this);

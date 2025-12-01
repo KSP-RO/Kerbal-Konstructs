@@ -340,6 +340,7 @@ namespace KerbalKonstructs.Core
             {
 
                 Log.Error("Launch site " + site.LaunchSiteName + " already exists.");
+                return;
             }
 
 
