@@ -377,7 +377,7 @@ namespace KerbalKonstructs.Core
                 }
                 else if (launchSite == null)
                 {
-                    Log.Normal($"Launchsite is null, cannot find vessel ({vessel?.vesselName}) at Squad launchsite");
+                    Log.Normal($"Launchsite is null, did not find vessel ({vessel?.vesselName}) at Squad launchsite");
                     return false;
                 }
             }
