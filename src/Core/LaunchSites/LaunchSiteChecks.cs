@@ -377,7 +377,7 @@ namespace KerbalKonstructs.Core
                 }
                 else if (launchSite == null)
                 {
-                    Log.Normal($"Launchsite is null, did not find vessel ({vessel?.vesselName}) at Squad launchsite");
+                    Log.Normal($"Launchsite is null, did not find vessel ({vessel.vesselName}) at Squad launchsite");
                     return false;
                 }
             }
@@ -392,25 +392,25 @@ namespace KerbalKonstructs.Core
 
                     if (body == null)
                     {
-                        Log.Normal($"Could not find body for vessel ({vessel?.vesselName})");
+                        Log.Normal($"Could not find body for vessel ({vessel.vesselName})");
                         return false;
                     }
 
                     if (body != launchSite.body)
                     {
-                        Log.Normal($"Vessel ({vessel?.vesselName}) is on different body than Launchsite");
+                        Log.Normal($"Vessel ({vessel.vesselName}) is on different body than Launchsite");
                         return false;
                     }
 
                     if (distance == 0)
                     {
-                        Log.Normal($"Vessel ({vessel?.vesselName}) has same position as Launchsite, probably floating point error. Using gps checks instead.");
+                        Log.Normal($"Vessel ({vessel.vesselName}) has same position as Launchsite, probably floating point error. Using gps checks instead.");
 
                         Vector2d tol = GetLatLonTolerance(launchSite.staticInstance.groupCenter.RefLatitude, launchSite.staticInstance.groupCenter.RefLongitude, maxDistance, body.Radius + launchSite.staticInstance.groupCenter.RadiusOffset);
 
                         if (Math.Abs(vessel.latitude - launchSite.staticInstance.groupCenter.RefLatitude) > tol.y || Math.Abs(vessel.longitude - launchSite.staticInstance.groupCenter.RefLongitude) > tol.x)
                         {
-                            Log.Normal($"Vessel ({vessel?.vesselName}) is outside lat/lon tolerance");
+                            Log.Normal($"Vessel ({vessel.vesselName}) is outside lat/lon tolerance");
                             Log.Debug($"Lat/Lon tolerance: {tol.y}, {tol.x}");
                             Log.Debug($"Vessel Lat/Lon: {vessel.latitude}, {vessel.longitude}");
                             Log.Debug($"Launchsite Lat/Lon: {launchSite.staticInstance.groupCenter.RefLatitude}, {launchSite.staticInstance.groupCenter.RefLongitude}");
@@ -418,7 +418,7 @@ namespace KerbalKonstructs.Core
                         }
                         else
                         {
-                            Log.Normal($"Found Vessel ({vessel?.vesselName}) at Launchsite inside lat/lon tolerance");
+                            Log.Normal($"Found Vessel ({vessel.vesselName}) at Launchsite inside lat/lon tolerance");
                             Log.Debug($"Lat/Lon tolerance: {tol.y}, {tol.x}");
                             Log.Debug($"Vessel Lat/Lon: {vessel.latitude}, {vessel.longitude}");
                             Log.Debug($"Launchsite Lat/Lon: {launchSite.staticInstance.groupCenter.RefLatitude}, {launchSite.staticInstance.groupCenter.RefLongitude}");
@@ -427,7 +427,7 @@ namespace KerbalKonstructs.Core
                     }
                     else if (distance < maxDistance)
                     {
-                        Log.Normal($"Found Vessel ({vessel?.vesselName}) at Launchsite with distance: " + distance);
+                        Log.Normal($"Found Vessel ({vessel.vesselName}) at Launchsite with distance: " + distance);
                         return true;
                     }
                 }
