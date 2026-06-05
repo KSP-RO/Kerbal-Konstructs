@@ -1000,133 +1000,139 @@ namespace KerbalKonstructs
 
             foreach (UrlDir.UrlConfig conf in configs)
             {
-
-                // ignore referenced objects
-                if (conf.config.HasValue("pointername"))
+                try
                 {
-                    if ((!String.IsNullOrEmpty(conf.config.GetValue("pointername")) && !conf.config.GetValue("pointername").Equals("none", StringComparison.CurrentCultureIgnoreCase)))
+                    // ignore referenced objects
+                    if (conf.config.HasValue("pointername"))
                     {
-                        continue;
-                    }
-                }
-                // Check if an modelname is set we can use, else set one
-                string modelName = conf.config.GetValue("name");
-                if (String.IsNullOrEmpty(modelName))
-                {
-                    Log.UserWarning("No Name Found in configuration : " + conf.url.Substring(0, conf.url.LastIndexOf('/')) + ".cfg");
-                    modelName = Regex.Replace(conf.config.GetValue("title"), @"\s+", "");
-                    if (String.IsNullOrEmpty(modelName))
-                    {
-                        modelName = conf.url.Substring(0, conf.url.LastIndexOf('/')) + ".cfg";
-                    }
-                    if (!String.IsNullOrEmpty(modelName))
-                    {
-                        conf.config.SetValue("name", modelName, true);
-                    }
-                    else
-                    {
-                        Log.Error("No Name Found in configuration : " + conf.url.Substring(0, conf.url.LastIndexOf('/')) + ".cfg");
-                        continue;
-                    }
-                }
-
-                StaticModel model = new StaticModel
-                {
-                    path = Path.GetDirectoryName(Path.GetDirectoryName(conf.url)).Replace("\\", "/"),
-                    name = modelName,
-                    config = conf.url,
-                    configPath = conf.url.Substring(0, conf.url.LastIndexOf('/')) + ".cfg"
-                };
-
-                ConfigParser.ParseModelConfig(model, conf.config);
-
-                if (model.mesh.Contains('.'))
-                {
-                    model.mesh = model.mesh.Substring(0, model.mesh.LastIndexOf('.'));
-                    //                model.settings = KKAPI.loadConfig(conf.config, KKAPI.getModelSettings());
-                }
-                model.prefab = GameDatabase.Instance.GetModelPrefab(model.path + "/" + model.mesh);
-
-                if (model.prefab == null)
-                {
-                    Log.UserError("Could not find " + model.path + "/" + model.mesh + ".mu!");
-                    continue;
-                }
-
-                //foreach (MeshRenderer renderer in model.prefab.GetComponentsInChildren<MeshRenderer>(true))
-                //{
-                //    renderer.sharedMaterial.shader = KKGraphics.GetShader("Standard");
-                //}
-                //model.prefab.isStatic = true;
-                //StaticBatchingUtility.Combine(model.prefab);
-
-                foreach (ConfigNode ins in conf.config.GetNodes("MODULE"))
-                {
-                    StaticModule module = new StaticModule();
-                    foreach (ConfigNode.Value value in ins.values)
-                    {
-                        switch (value.name)
+                        if ((!String.IsNullOrEmpty(conf.config.GetValue("pointername")) && !conf.config.GetValue("pointername").Equals("none", StringComparison.CurrentCultureIgnoreCase)))
                         {
-                            case "namespace":
-                                module.moduleNamespace = value.value;
-                                break;
-                            case "name":
-                                module.moduleClassname = value.value;
-                                break;
-                            default:
-                                module.moduleFields.Add(value.name, value.value);
-                                break;
-                        }
-                    }
-
-                    // check for unused AdvTexture Modules
-                    if (module.moduleClassname == "AdvancedTextures")
-                    {
-                        bool transformFound = false;
-                        string transforms = "";
-                        string[] seperators = new string[] { " ", ",", ";" };
-                        List<string> targetTransforms = new List<string> { "Any" };
-
-                        if (module.moduleFields.ContainsKey("transforms"))
-                        {
-                            transforms = module.moduleFields["transforms"];
-                            targetTransforms = transforms.Split(seperators, StringSplitOptions.RemoveEmptyEntries).ToList();
-                            foreach (MeshRenderer renderer in model.prefab.GetComponentsInChildren<MeshRenderer>(true))
-                            {
-                                if (!transforms.Equals("Any", StringComparison.CurrentCultureIgnoreCase) && !targetTransforms.Contains(renderer.transform.name))
-                                {
-                                    continue;
-                                }
-                                transformFound = true;
-                            }
-                        }
-                        else
-                        {
-                            transformFound = true;
-                        }
-                        if (!transformFound)
-                        {
-                            //Log.Normal("Adv Texture Preload: transforms not found: " + transforms + " on model: " + model.name);
                             continue;
                         }
                     }
-                    if (model.modules == null)
+                    // Check if an modelname is set we can use, else set one
+                    string modelName = conf.config.GetValue("name");
+                    if (String.IsNullOrEmpty(modelName))
                     {
-                        model.modules = new List<StaticModule>();
+                        Log.UserWarning("No Name Found in configuration : " + conf.url.Substring(0, conf.url.LastIndexOf('/')) + ".cfg");
+                        modelName = Regex.Replace(conf.config.GetValue("title"), @"\s+", "");
+                        if (String.IsNullOrEmpty(modelName))
+                        {
+                            modelName = conf.url.Substring(0, conf.url.LastIndexOf('/')) + ".cfg";
+                        }
+                        if (!String.IsNullOrEmpty(modelName))
+                        {
+                            conf.config.SetValue("name", modelName, true);
+                        }
+                        else
+                        {
+                            Log.Error("No Name Found in configuration : " + conf.url.Substring(0, conf.url.LastIndexOf('/')) + ".cfg");
+                            continue;
+                        }
                     }
-                    model.modules.Add(module);
-                }
 
-                if (model.keepConvex != true)
+                    StaticModel model = new StaticModel
+                    {
+                        path = Path.GetDirectoryName(Path.GetDirectoryName(conf.url)).Replace("\\", "/"),
+                        name = modelName,
+                        config = conf.url,
+                        configPath = conf.url.Substring(0, conf.url.LastIndexOf('/')) + ".cfg"
+                    };
+
+                    ConfigParser.ParseModelConfig(model, conf.config);
+
+                    if (model.mesh.Contains('.'))
+                    {
+                        model.mesh = model.mesh.Substring(0, model.mesh.LastIndexOf('.'));
+                        //                model.settings = KKAPI.loadConfig(conf.config, KKAPI.getModelSettings());
+                    }
+                    model.prefab = GameDatabase.Instance.GetModelPrefab(model.path + "/" + model.mesh);
+
+                    if (model.prefab == null)
+                    {
+                        Log.UserError("Could not find " + model.path + "/" + model.mesh + ".mu!");
+                        continue;
+                    }
+
+                    //foreach (MeshRenderer renderer in model.prefab.GetComponentsInChildren<MeshRenderer>(true))
+                    //{
+                    //    renderer.sharedMaterial.shader = KKGraphics.GetShader("Standard");
+                    //}
+                    //model.prefab.isStatic = true;
+                    //StaticBatchingUtility.Combine(model.prefab);
+
+                    foreach (ConfigNode ins in conf.config.GetNodes("MODULE"))
+                    {
+                        StaticModule module = new StaticModule();
+                        foreach (ConfigNode.Value value in ins.values)
+                        {
+                            switch (value.name)
+                            {
+                                case "namespace":
+                                    module.moduleNamespace = value.value;
+                                    break;
+                                case "name":
+                                    module.moduleClassname = value.value;
+                                    break;
+                                default:
+                                    module.moduleFields.Add(value.name, value.value);
+                                    break;
+                            }
+                        }
+
+                        // check for unused AdvTexture Modules
+                        if (module.moduleClassname == "AdvancedTextures")
+                        {
+                            bool transformFound = false;
+                            string transforms = "";
+                            string[] seperators = new string[] { " ", ",", ";" };
+                            List<string> targetTransforms = new List<string> { "Any" };
+
+                            if (module.moduleFields.ContainsKey("transforms"))
+                            {
+                                transforms = module.moduleFields["transforms"];
+                                targetTransforms = transforms.Split(seperators, StringSplitOptions.RemoveEmptyEntries).ToList();
+                                foreach (MeshRenderer renderer in model.prefab.GetComponentsInChildren<MeshRenderer>(true))
+                                {
+                                    if (!transforms.Equals("Any", StringComparison.CurrentCultureIgnoreCase) && !targetTransforms.Contains(renderer.transform.name))
+                                    {
+                                        continue;
+                                    }
+                                    transformFound = true;
+                                }
+                            }
+                            else
+                            {
+                                transformFound = true;
+                            }
+                            if (!transformFound)
+                            {
+                                //Log.Normal("Adv Texture Preload: transforms not found: " + transforms + " on model: " + model.name);
+                                continue;
+                            }
+                        }
+                        if (model.modules == null)
+                        {
+                            model.modules = new List<StaticModule>();
+                        }
+                        model.modules.Add(module);
+                    }
+
+                    if (model.keepConvex != true)
+                    {
+                        foreach (MeshCollider collider in model.prefab.GetComponentsInChildren<MeshCollider>(true))
+                        {
+                            Log.Debug("Making collider " + collider.name + " concave.");
+                            collider.convex = false;
+                        }
+                    }
+
+                    StaticDatabase.RegisterModel(model, modelName);
+                }
+                catch (Exception ex)
                 {
-                    foreach (MeshCollider collider in model.prefab.GetComponentsInChildren<MeshCollider>(true))
-                    {
-                        Log.Debug("Making collider " + collider.name + " concave.");
-                        collider.convex = false;
-                    }
+                    Log.Exception($"Error loading model from config: {conf.url.Substring(0, conf.url.LastIndexOf('/'))}.cfg", ex);
                 }
-
-                StaticDatabase.RegisterModel(model, modelName);
             }
         }
 

@@ -90,6 +90,16 @@ namespace KerbalKonstructs.Core
         }
 
         /// <summary>
+        /// Logs an exception
+        /// </summary>
+        internal static void Exception(string message, System.Exception ex)
+        {
+            StackFrame frame = new StackFrame(1, true);
+            UnityEngine.Debug.LogError("KK: [" + frame.GetMethod().DeclaringType.Name + "] " + frame.GetMethod().Name + ": " + message);
+            UnityEngine.Debug.LogException(ex);
+        }
+
+        /// <summary>
         /// prints the current call-trace to the debug log
         /// </summary>
         internal static void Trace()
