@@ -197,6 +197,9 @@ namespace KerbalKonstructs.Modules
         /// <param name="instance"></param>
         internal static void AttachGroundStation(StaticInstance instance)
         {
+        Debug.Log("[KK DEBUG] AttachGroundStation: " + instance.Group);
+Debug.Log("[KK DEBUG] FacilityType: " + instance.facilityType);
+Debug.Log("[KK DEBUG] CommNet Enabled: " + KerbalKonstructs.instance.enableCommNet);
             GroundStation myfacility = instance.myFacilities.Where(fac => fac.facType == KKFacilityType.GroundStation).First() as GroundStation;
             // we use a messure of 1000km from the settings.
             if (myfacility.TrackingShort == 0f || instance.Group == "KSCUpgrades")
@@ -221,6 +224,7 @@ namespace KerbalKonstructs.Modules
             StaticInstance instance = facility.staticInstance;
             float antennaPower = facility.TrackingShort * 1000000;
             Log.Normal("Adding Groundstation: " + instance.Group);
+            Debug.Log("[KK DEBUG] AddCommNetStation");
             if (!openCNStations.Contains(instance))
             {
                 KKCommNetHome commNetGroudStation = instance.gameObject.AddComponent<KKCommNetHome>();
