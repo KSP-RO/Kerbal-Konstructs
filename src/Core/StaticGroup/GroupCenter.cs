@@ -175,8 +175,12 @@ namespace KerbalKonstructs.Core
                 Vector3 oldRight = gameObject.transform.right;
                 Quaternion oldRotation = gameObject.transform.rotation;
 
-                Vector3 forward = CelestialBody.GetRelSurfacePosition(RefLatitude, RefLongitude + CelestialBody.directRotAngle, RadiusOffset);
-                Quaternion rotForward = Quaternion.LookRotation(forward);
+                Vector3 forward = CelestialBody.GetWorldSurfacePosition(RefLatitude, RefLongitude, RadiusOffset) - CelestialBody.position;
+
+                // Use the body's polar axis as "up" so heading 0 points toward the pole,
+                // matching the heading getter. Without this, tilted bodies would align
+                // to celestial north instead of the body's own north.
+                Quaternion rotForward = Quaternion.LookRotation(forward, CelestialBody.transform.up);
                 Quaternion rotHeading = Quaternion.Euler(0f, 0f, Heading);
                 Quaternion halveInvert = Quaternion.Euler(-90f, -90f, -90f);
 
